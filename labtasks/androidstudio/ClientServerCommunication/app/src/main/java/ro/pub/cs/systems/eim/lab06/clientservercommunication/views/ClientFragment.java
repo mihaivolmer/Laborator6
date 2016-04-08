@@ -34,10 +34,17 @@ public class ClientFragment extends Fragment {
                 // TODO: exercise 6b
                 // - get the connection parameters (serverAddress and serverPort from parameters - on positions 0 and 1)
                 // - open a socket to the server
+                Socket socket = new Socket(params[0], Integer.parseInt(params[1].toString()));
                 // - get the BufferedReader object in order to read from the socket (use Utilities.getReader())
+                BufferedReader bufferedReader = Utilities.getReader(socket);
                 // - while the line that was read is not null (EOF was not sent), append the content to serverMessageTextView
                 // by publishing the progress - with the publishProgress(...) method - to the UI thread
+                String line = null;
+                while((line = bufferedReader.readLine()) != null) {
+                    onProgressUpdate(line);
+                }
                 // - close the socket to the server
+
 
             } catch (Exception exception) {
                 Log.e(Constants.TAG, "An exception has occurred: " + exception.getMessage());
@@ -58,6 +65,7 @@ public class ClientFragment extends Fragment {
         protected void onProgressUpdate(String... progress) {
             // TODO: exercise 6b
             // - append the content to serverMessageTextView
+            serverMessageTextView.setText(serverMessageTextView.getText().toString() + progress);
         }
 
         @Override
